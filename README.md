@@ -2,6 +2,8 @@
 
 #Instalar mvn 3.8.6: Agregar carpeta descompirmida mvn a C:\home.
 
+#Clonar el proyecto
+
 #Congigurar variables de entorno en sistema.
 
 #Utilizar intellij de preferencia. Realizar comando mvn clean install de ser necesario.
