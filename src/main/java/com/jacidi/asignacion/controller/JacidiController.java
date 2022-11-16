@@ -8,6 +8,7 @@ import com.jacidi.asignacion.repositories.ProductRepository;
 import com.jacidi.asignacion.repositories.ShipmentRepository;
 import com.jacidi.asignacion.services.ClientService;
 import com.jacidi.asignacion.services.MembershipService;
+import com.jacidi.asignacion.services.ProductService;
 import com.jacidi.asignacion.services.ShipmentService;
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -36,6 +37,9 @@ public class JacidiController {
     ShipmentService shipmentService;
 
     @Autowired
+    ProductService productService;
+
+    @Autowired
     ClientService clientService;
 
     @Autowired
@@ -44,7 +48,7 @@ public class JacidiController {
     @Autowired
     ShipmentRepository shipmentRepository;
 
-    @ApiMethod(consumes = TEXT_JSON, produces = APPLICATION_JSON, description = REQUEST_CREATE_CLIENT_DESCRIPTION)
+    @ApiMethod(consumes = TEXT_JSON, produces = APPLICATION_JSON, description = REQUEST_RENEWAL_SHIPMENT_DESCRIPTION)
     @RequestMapping(method = RequestMethod.PUT, value = URL_RENEW_MEMBERSHIP)
     @ApiResponseObject
     @ResponseBody
@@ -77,19 +81,34 @@ public class JacidiController {
     }
 
 
-    @PostMapping(URL_REMOVE_PRODUCT)
-    public Object  removeProduct(Integer idProduct, Integer idShipment){
-        Object objectResponse = null;
-        if (idProduct != null && idShipment != null ){
+    @ApiMethod(consumes = TEXT_JSON, produces = APPLICATION_JSON, description = REQUEST_REMOVE_PRODUCT_DESCRIPTION)
+    @RequestMapping(method = RequestMethod.PUT, value = URL_RENEW_MEMBERSHIP)
+    @ApiResponseObject
+    @ResponseBody
+    public Object  removeProduct(@RequestBody String json){
+        Object objectResult = null;
+
+        if(json != null && !json.isEmpty()){
             try{
-                objectResponse = shipmentService.removeProduct(idProduct, idShipment);
+                Map<String, Object> params   = new ObjectMapper().readerFor(Map.class).readValue(json);
+
+                Integer idProduct = (params.containsKey(ID_PRODUCT) && params.get(ID_PRODUCT) != null
+                        && !params.get(ID_PRODUCT).toString().isEmpty())
+                        ? Integer.valueOf(params.get(ID_PRODUCT).toString().trim()) : null;
+
+                Integer idShipment = (params.containsKey(ID_SHIPMENT) && params.get(ID_SHIPMENT) != null
+                        && !params.get(ID_SHIPMENT).toString().isEmpty())
+                        ? Integer.valueOf(params.get(ID_SHIPMENT).toString().trim()) : null;
+
+                objectResult = productService.removeProduct(idProduct,idShipment);
             }
-            catch (Exception e){
-                e.printStackTrace();
+            catch (IOException e){
+                objectResult = "Json Error";
             }
         }else{
-            return "El id del shipment o del producto no existe";
+            objectResult = "Error en la data recibida para crear un cliente";
         }
-        return objectResponse;
+
+        return objectResult;
     }
 }

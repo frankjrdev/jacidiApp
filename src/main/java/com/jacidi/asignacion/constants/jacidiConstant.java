@@ -23,6 +23,7 @@ public interface jacidiConstant {
     static final String ID_CLIENT = "idClient";
     static final String ID_MEMBERSHIP = "idMembership";
     static final String ID_PRODUCT = "idProduct";
+    static final String ID_SHIPMENT = "idShipment";
     static final String LIST_PRODUCT_ID = "listProductId";
     static final String TOTAL_COST = "totalCost";
     static final String DELIVER_DATE = "deliverDate";
@@ -349,6 +350,32 @@ public interface jacidiConstant {
             + "<u>Ejemplo:</u>"
             + "<pre>{<br />"
             +	"    \"<b>id</b>\" : <em>1</em><br/>"
+            + "}</pre>"
+            + "En caso de enviar los parámetros correctamente, deberá recibir un json con el resultado del proceso.";
+
+    static final String REQUEST_RENEWAL_SHIPMENT_DESCRIPTION = "<div class='alert alert-info'><h3><u><span class='label label-default'>" +
+            " Get Clients Api Param </span></u></h3>"
+            + "Método que renueva el shipment de un cliente. Recibe un json string con los siguientes parámetros:"
+            + "<ul class='list-group'> "
+            + "<li class='list-group-item list-group-item-warning'><b><u>url:</u></b> http://localhost:8080/client/getClient. </li>"
+            + "</ul>"
+            + "<u>Ejemplo:</u>"
+            + "<pre>{<br />"
+            +	"    \"<b>idClient</b>\" : <em>1</em>,<br/>"
+            +	"    \"<b>idMembership</b>\" : <em>1</em><br/>"
+            + "}</pre>"
+            + "En caso de enviar los parámetros correctamente, deberá recibir un json con el resultado del proceso.";
+
+    static final String REQUEST_REMOVE_PRODUCT_DESCRIPTION = "<div class='alert alert-info'><h3><u><span class='label label-default'>" +
+            " Get Clients Api Param </span></u></h3>"
+            + "Método que renueva el shipment de un cliente. Recibe un json string con los siguientes parámetros:"
+            + "<ul class='list-group'> "
+            + "<li class='list-group-item list-group-item-warning'><b><u>url:</u></b> http://localhost:8080/client/getClient. </li>"
+            + "</ul>"
+            + "<u>Ejemplo:</u>"
+            + "<pre>{<br />"
+            +	"    \"<b>idClient</b>\" : <em>1</em>,<br/>"
+            +	"    \"<b>idMembership</b>\" : <em>1</em><br/>"
             + "}</pre>"
             + "En caso de enviar los parámetros correctamente, deberá recibir un json con el resultado del proceso.";
 }

@@ -5,6 +5,8 @@ import com.jacidi.asignacion.entities.Client;
 import com.jacidi.asignacion.entities.Product;
 import com.jacidi.asignacion.entities.Shipment;
 import com.jacidi.asignacion.repositories.ProductRepository;
+import com.jacidi.asignacion.repositories.ShipmentProductsRepository;
+import com.jacidi.asignacion.repositories.ShipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,12 @@ public class ProductService {
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    ShipmentRepository shipmentRepository;
+
+    @Autowired
+    ShipmentProductsRepository shipmentProductsRepository;
 
     //Get all products
     public Map<String, Object> getAllProducts(){
@@ -156,6 +164,35 @@ public class ProductService {
 
         return response;
     }
+
+    //Delete product
+    public Map<String, Object> removeProduct(Integer idProduct,
+                                             Integer idShipment){
+        Map<String, Object> response = new HashMap<>();
+        Product product;
+        Shipment shipment;
+        try{
+            product = productRepository.findById(idProduct);
+            shipment = shipmentRepository.findById(idShipment);
+            if (product != null) {
+                shipmentProductsRepository.removeById_productAndId_shipment(idShipment, idProduct);
+                response.put(MESSAGE, MESSAGE_SUCCESS);
+                response.put(TYPE, MESSAGE_TYPE_SUCCESS);
+                response.put(RESPONSE_OBJECT, "Productos eliminado correctamente");
+            } else {
+                response.put(MESSAGE, MESSAGE_ERROR);
+                response.put(TYPE, MESSAGE_TYPE_ERROR);
+                response.put(RESPONSE_TEXT, RESPONSE_GET_PRODUCT_FAILED);
+            }
+        }catch (Exception e){
+            response.put(MESSAGE, MESSAGE_ERROR);
+            response.put(TYPE, MESSAGE_TYPE_ERROR);
+        }
+
+        return response;
+    }
+
+
 
 
 }
