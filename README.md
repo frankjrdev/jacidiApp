@@ -10,12 +10,6 @@
 #Ejecutar el proyecto.
 
 #Crear bases de datos solicitadas.
-
-#Probar endPoints creados en los controladores de la aplicacion.
-
-
-#Querys para DB
-
 CREATE TABLE `jacidi`.`membership` (
   `id_membership` INT NOT NULL AUTO_INCREMENT,
   `key_membership` VARCHAR(45) NULL,
@@ -69,7 +63,11 @@ CREATE TABLE `jacidi`.`shipment_products` (
     FOREIGN KEY (`id_shipment`)
     REFERENCES `jacidi`.`shipment` (`idshipment`)
     );
+    
+#password db: jacidi
+#user db: root
 
+#Probar endPoints creados en los controladores de la aplicacion.
 
 # docker buil -t app-jacidi:1.0 .
 
