@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static com.jacidi.asignacion.constants.jacidiConstant.*;
 
 @Service
 public class MembershipService {
@@ -30,39 +30,162 @@ public class MembershipService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<Membership> getAllMembership(){
-        List<Membership> memberships = new ArrayList<>();
+
+    //Get all memberships
+    public Map<String, Object> getAllMembership(){
+        Map<String, Object> response = new HashMap<>();
+        List<Membership> memberships;
         try{
             memberships = membershipRepository.findAll();
+            if(memberships != null){
+                response.put(MESSAGE, MESSAGE_SUCCESS);
+                response.put(TYPE, MESSAGE_TYPE_SUCCESS);
+                response.put(RESPONSE_OBJECT, memberships);
+            }else{
+                response.put(MESSAGE, MESSAGE_ERROR);
+                response.put(TYPE, MESSAGE_TYPE_ERROR);
+                response.put(RESPONSE_TEXT, RESPONSE_GET_MEMBERSHIPS_FAILED);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return memberships;
+        return response;
     }
 
-    public Membership getMemberShipById(int id){
-        Membership membership = new Membership();
+
+    //Get membership
+    public Map<String, Object> getMemberShipById(Integer id){
+        Map<String, Object> response = new HashMap<>();
+        Membership membership;
         try{
-            membership = membershipRepository.findById(id).get();
+            membership = membershipRepository.findById(id);
+            if (membership != null) {
+                response.put(MESSAGE, MESSAGE_SUCCESS);
+                response.put(TYPE, MESSAGE_TYPE_SUCCESS);
+                response.put(RESPONSE_OBJECT, membership);
+            } else {
+                response.put(MESSAGE, MESSAGE_ERROR);
+                response.put(TYPE, MESSAGE_TYPE_ERROR);
+                response.put(RESPONSE_TEXT, RESPONSE_GET_MEMBERSHIP_FAILED);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        return membership;
+        return response;
+    }
+
+    //Create membership
+    public Map<String, Object> createMembership(String key,
+                                       String name,
+                                       Integer prio,
+                                       Long duration){
+
+        Map<String, Object> response = new HashMap<>();
+        Membership membership;
+        try{
+            membership = membershipRepository.findByKey(key);
+            if(membership == null){
+                membership = new Membership();
+                membership.setKey(key);
+                membership.setName(name);
+                membership.setDuration(duration);
+                membership.setPrio(prio);
+
+                membershipRepository.save(membership);
+                response.put(MESSAGE, MESSAGE_SUCCESS);
+                response.put(TYPE, MESSAGE_TYPE_SUCCESS);
+                response.put(RESPONSE_TEXT, RESPONSE_CREATE_MEMBERSHIP_SUCCESS);
+                response.put(RESPONSE_OBJECT, membership);
+            }else {
+                response.put(MESSAGE, MESSAGE_ERROR);
+                response.put(TYPE, MESSAGE_TYPE_ERROR);
+                response.put(RESPONSE_TEXT, RESPONSE_CREATE_MEMBERSHIP_FAILED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put(MESSAGE, MESSAGE_ERROR);
+            response.put(TYPE, MESSAGE_TYPE_ERROR);
+        }
+
+        return response;
+    }
+
+    //Update membership
+    public Map<String, Object> updateMembership(Integer id,
+                                                String key,
+                                                String name,
+                                                Integer prio,
+                                                Long duration){
+
+        Map<String, Object> response = new HashMap<>();
+        Membership membership;
+        try{
+            membership = membershipRepository.findByKey(key);
+            if(membership != null){
+                membership.setKey(key);
+                membership.setName(name);
+                membership.setDuration(duration);
+                membership.setPrio(prio);
+
+                membershipRepository.save(membership);
+                response.put(MESSAGE, MESSAGE_SUCCESS);
+                response.put(TYPE, MESSAGE_TYPE_SUCCESS);
+                response.put(RESPONSE_TEXT, RESPONSE_UPDATE_MEMBERSHIP_SUCCESS);
+                response.put(RESPONSE_OBJECT, membership);
+            }else {
+                response.put(MESSAGE, MESSAGE_ERROR);
+                response.put(TYPE, MESSAGE_TYPE_ERROR);
+                response.put(RESPONSE_TEXT, RESPONSE_UPDATE_MEMBERSHIP_FAILED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put(MESSAGE, MESSAGE_ERROR);
+            response.put(TYPE, MESSAGE_TYPE_ERROR);
+        }
+
+        return response;
+    }
+
+    //Delete membership
+    public Map<String, Object> deleteMembership(Integer id){
+        Map<String, Object> response = new HashMap<>();
+        Membership membership;
+
+        try{
+            membership = membershipRepository.findById(id);
+            if(membership != null){
+                membershipRepository.delete(membership);
+                response.put(MESSAGE, MESSAGE_SUCCESS);
+                response.put(TYPE, MESSAGE_TYPE_SUCCESS);
+                response.put(RESPONSE_OBJECT, "Cliente eliminado correctamente");
+            }else{
+                response.put(MESSAGE, MESSAGE_ERROR);
+                response.put(TYPE, MESSAGE_TYPE_ERROR);
+                response.put(RESPONSE_TEXT, RESPONSE_GET_MEMBERSHIP_FAILED);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            response.put(MESSAGE, MESSAGE_ERROR);
+            response.put(TYPE, MESSAGE_TYPE_ERROR);
+        }
+
+
+        return response;
     }
 
 
     public Object renewMemberShipClient(Integer idClient, Integer idMembership){
 
         Object objectResponse = null;
-        Membership membership = new Membership();
-        Client client = new Client();
+        Membership membership;
+        Client client;
         try{
 
             Date today = new Date();
-            membership = membershipRepository.findById(idMembership).get();
-            client = clientRepository.findById(idClient).get();
+            membership = membershipRepository.findById(idMembership);
+            client = clientRepository.findById(idClient);
 
             client.setMembership(membership);
 
@@ -85,11 +208,11 @@ public class MembershipService {
             List<Product> products = new ArrayList<>();
             Client client = new Client();
             if(clientRepository.findById(idClient) != null){
-                client = clientRepository.findById(idClient).get();
+                client = clientRepository.findById(idClient);
             }
 
             for (Integer idProduct: idProducList){
-                Product product = productRepository.findById(idProduct).get();
+                Product product = productRepository.findById(idProduct);
                 totalCost.add(BigDecimal.valueOf(Double.valueOf(product.getCost().toString())));
             }
 

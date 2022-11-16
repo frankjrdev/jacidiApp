@@ -8,13 +8,9 @@ import java.math.BigDecimal;
 @Table(name = "product", schema = "jacidi")
 public class Product {
 
-    @ManyToOne
-    @JoinColumn(nullable=false)
-    private Shipment shipment;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id_product")
     private Integer id;
 
     @Column(name = "name")
@@ -23,15 +19,11 @@ public class Product {
     @Column(name = "cost")
     private BigDecimal cost;
 
-    @Column(name = "minPrio")
+    @Column(name = "min_prio")
     private Integer minPrio;
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {

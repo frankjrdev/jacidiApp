@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ShipmentRepository extends CrudRepository<Shipment, Integer> {
+public interface ShipmentRepository extends CrudRepository<Shipment, Long> {
 
     List<Shipment> findAll();
 

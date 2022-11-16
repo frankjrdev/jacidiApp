@@ -12,20 +12,17 @@ public class Shipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column( name = "id")
+    @Column( name = "id_shipment")
     private Integer id;
 
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn( name = "id_client", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn( name = "id_client")
     private Client client;
 
-    @OneToMany(mappedBy = "shipment")
-    private List<Product> products;
-
-    @Column( name = "totalCost")
+    @Column( name = "total_cost")
     private BigDecimal totalCost;
 
-    @Column( name = "deliverDate")
+    @Column( name = "deliver_date")
     private Date deliverDate;
 
 
@@ -39,14 +36,6 @@ public class Shipment {
 
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
     }
 
     public BigDecimal getTotalCost() {

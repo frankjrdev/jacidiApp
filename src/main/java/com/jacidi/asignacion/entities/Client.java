@@ -9,10 +9,13 @@ import java.util.Date;
 public class Client {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id_client")
     private Integer id;
 
-    @Column(name="lastName")
+    @Column(name="name")
+    private String name;
+
+    @Column(name="last_name")
     private String lastName;
 
     @Column(name="dni")
@@ -21,23 +24,15 @@ public class Client {
     @Column(name="email")
     private String email;
 
-    @Column(name="lastDelivery")
+    @Column(name="last_delivery")
     private Date lastDelivery;
 
-    @Column(name="nextRenewal")
+    @Column(name="next_renewal")
     private Date nextRenewal;
 
-    @OneToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name = "id_membership", referencedColumnName = "id")
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name="id_membership")
     private Membership membership;
-
-    public Membership getMembership() {
-        return membership;
-    }
-
-    public void setMembership(Membership membership) {
-        this.membership = membership;
-    }
 
     public Client() {
     }
@@ -46,8 +41,12 @@ public class Client {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLastName() {
@@ -88,5 +87,13 @@ public class Client {
 
     public void setNextRenewal(Date nextRenewal) {
         this.nextRenewal = nextRenewal;
+    }
+
+    public Membership getMembership() {
+        return membership;
+    }
+
+    public void setMembership(Membership membership) {
+        this.membership = membership;
     }
 }

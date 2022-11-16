@@ -10,14 +10,14 @@ public class Membership {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name="id_membership")
     private Integer id;
 
-    @Column(name = "key")
+    @Column(name = "key_membership")
     private String key;
 
     @Column(name = "name")
-    private BigDecimal name;
+    private String name;
 
     @Column( name = "prio")
     private Integer prio;
@@ -29,10 +29,6 @@ public class Membership {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getKey() {
         return key;
     }
@@ -41,11 +37,11 @@ public class Membership {
         this.key = key;
     }
 
-    public BigDecimal getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(BigDecimal name) {
+    public void setName(String name) {
         this.name = name;
     }
 
