@@ -72,3 +72,6 @@ CREATE TABLE `jacidi`.`shipment_products` (
 # docker buil -t app-jacidi:1.0 .
 
 # docker run --net=host -p 8080:8080 $idImage
+
+
+# Para realizar pruebas se creo un interfaz gradica por medio de JsonDoc por medio de http://localhost:8080/jsondoc-ui.html# jsdondoc
